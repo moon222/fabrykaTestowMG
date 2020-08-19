@@ -12,22 +12,73 @@
 # Data i godzina: 23.03.2020 14:14:13
 # Czas wykonania zapytania: 150ms
 
-# importing the requests library
+# import the requests and datetime library
 import requests
+from datetime import datetime
 
-# api-endpoint
-url = 'https://api.exchangeratesapi.io/latest?base=GBP'
 
-# sending get request
-response = requests.get(url)
-print(response.text)
-# extracting data in json format
-data = response.json()
+# api-endpoint, global variable
+url = 'https://api.exchangeratesapi.io/latest'
 
-# extracting EUR currency
-euro = data['rates']['EUR']
-base = data['base']
-date = data['date']
-print('Kurs EUR wynosi: ', euro)
-print('Bazowa waluta: ', base)
-print('Data zapytania: ', date)
+
+
+def exchange_rate():
+    try:
+        # send "get" request
+        response = requests.get(url)
+
+        # save data in json format
+        data = response.json()
+
+        # extract PLN currency from json file
+        rate = data['rates']['PLN']
+        print('Kurs euro: ', rate)
+
+    except TimeoutError:
+        print('API unavailable. Timeout error. Try later.')
+
+
+def exchange_information(function):
+    def date_and_time():
+        # call exchange_rate() function
+        function()
+
+        # get current date and time in format RRRR-MM-DD HH:MM:SS:MS
+        now = datetime.now()
+
+        # convert to format dd/mm/YY H:M:S
+        dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+        print('Data i godzina: ', dt_string)
+
+        # measure execution time in milliseconds
+        response = requests.get(url)
+
+        # response.elapsed.total_seconds() returns seconds.
+        # To get milliseconds I have to multiply the result by 1000
+        response_time = response.elapsed.total_seconds() * 1000
+        print('Czas wykonania zapytania: ', response_time, 'ms')
+    return date_and_time()
+
+# call the function with other function as a parameter
+exchange_information(exchange_rate)
+
+# def getDateAndTime2():
+#     # get current date and time in format RRRR-MM-DD HH:MM:SS:MS
+#     now = datetime.now()
+#
+#     # dd/mm/YY H:M:S
+#     dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+#     print('Data i godzina: ', dt_string)
+#
+#     # measure execution time in milliseconds
+#     response = requests.get(url)
+#     # response.elapsed.total_seconds() returns seconds.
+#     # To get milliseconds I have to multiply the result by 1000
+#     responseTime = response.elapsed.total_seconds() * 1000
+#     print('Czas wykonania zapytania: ', responseTime, 'ms')
+
+
+
+# exchange_rate()
+# getDateAndTime()
+
