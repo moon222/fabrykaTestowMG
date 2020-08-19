@@ -1,27 +1,12 @@
-# TO DO:
-# - napisz funkcję, która będzie uderzać pod endpoint z kursami walut
-# np. https://exchangeratesapi.io/
-# - dodaj blok try/except aby zabezpieczyć ją przed Timeoutem
-# - dodaj drugą funkcję - dekorator, która będzie mierzyła czas trwania zapytania oraz datę i godzinę,
-# w której odbyło się zapytanie.
-# Zwróć te czasy na ekran
-# - Niech program wykonuje się w pętli z interwałem 15 sek.
-# - Przykładowy output
-#
-# Kurs Euro: 4,2356
-# Data i godzina: 23.03.2020 14:14:13
-# Czas wykonania zapytania: 150ms
-
-# import the requests and datetime library
+# import used libraries
 import requests
 from datetime import datetime
-
+from threading import Timer
 
 # api-endpoint, global variable
 url = 'https://api.exchangeratesapi.io/latest'
 
-
-
+# exchange_rate() function print euro rate from get request
 def exchange_rate():
     try:
         # send "get" request
@@ -32,12 +17,13 @@ def exchange_rate():
 
         # extract PLN currency from json file
         rate = data['rates']['PLN']
-        print('Kurs euro: ', rate)
+        print('Kurs euro:', rate)
 
     except TimeoutError:
         print('API unavailable. Timeout error. Try later.')
 
-
+# exchange_information() function uses other function and returns more informations such as:
+# current date and time and request response time.
 def exchange_information(function):
     def date_and_time():
         # call exchange_rate() function
@@ -48,7 +34,7 @@ def exchange_information(function):
 
         # convert to format dd/mm/YY H:M:S
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-        print('Data i godzina: ', dt_string)
+        print('Data i godzina:', dt_string)
 
         # measure execution time in milliseconds
         response = requests.get(url)
@@ -56,29 +42,23 @@ def exchange_information(function):
         # response.elapsed.total_seconds() returns seconds.
         # To get milliseconds I have to multiply the result by 1000
         response_time = response.elapsed.total_seconds() * 1000
-        print('Czas wykonania zapytania: ', response_time, 'ms')
-    return date_and_time()
+        print('Czas wykonania zapytania:', response_time, 'ms')
 
-# call the function with other function as a parameter
-exchange_information(exchange_rate)
+    return date_and_time
 
-# def getDateAndTime2():
-#     # get current date and time in format RRRR-MM-DD HH:MM:SS:MS
-#     now = datetime.now()
-#
-#     # dd/mm/YY H:M:S
-#     dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-#     print('Data i godzina: ', dt_string)
-#
-#     # measure execution time in milliseconds
-#     response = requests.get(url)
-#     # response.elapsed.total_seconds() returns seconds.
-#     # To get milliseconds I have to multiply the result by 1000
-#     responseTime = response.elapsed.total_seconds() * 1000
-#     print('Czas wykonania zapytania: ', responseTime, 'ms')
+# create a new function and assign 'exchange_information' with 'exchange_rate' function as parameter
+# it's needed for call_interval function
+new_function = exchange_information(exchange_rate)
 
+# create 'call_interval' function with timer set to 15 seconds
+def call_interval():
+    text = "------------------------------------"
+    # call new_function
+    new_function()
+    # print text variable content
+    print(f"{text}")
+    # set timer and start it
+    Timer(15, call_interval).start()
 
-
-# exchange_rate()
-# getDateAndTime()
-
+# call 'call_interval' function
+call_interval()
