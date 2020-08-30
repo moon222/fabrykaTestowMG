@@ -2,11 +2,12 @@ from selenium import webdriver
 
 
 # Ustaw driver
-driver = webdriver.Chrome('/Users/mongo/PycharmProjects/kurs_taps_windows/chromedriver.exe')
+driver = webdriver.Chrome()
 
 # Otwórz stronę fabrykatestow.pl
 driver.get('https://fabrykatestow.pl')
-
+# Zmaksymalizj wielkosc okna - na niektorych rozdzielczosciach menu gorke zwija sie w hamburgera
+driver.maximize_window()
 # Otwórz zakładkę "KURS TAPS"
 # Użyłam selectora id_element
 kurs_taps = driver.find_element_by_id('menu-item-506')

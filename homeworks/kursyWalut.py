@@ -42,7 +42,7 @@ def exchange_information(function):
         # response.elapsed.total_seconds() returns seconds.
         # To get milliseconds I have to multiply the result by 1000
         response_time = response.elapsed.total_seconds() * 1000
-        print('Czas wykonania zapytania:', response_time, 'ms')
+        print('Czas wykonania zapytania:', int(response_time), 'ms')
 
     return date_and_time
 
