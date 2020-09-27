@@ -1,7 +1,8 @@
 import unittest
 from selenium import webdriver
 from config.test_settings import TestSettings
-from tests.page_objects import main_page, checkboxes_page, hovers_page, users_page, inputs_page, dropdown_page, add_remove_page
+from tests.page_objects import main_page, checkboxes_page, hovers_page, users_page, inputs_page, dropdown_page
+from tests.page_objects import add_remove_page, date_picker_page, basic_auth_page, form_page
 
 
 class Tests(unittest.TestCase):
@@ -56,6 +57,41 @@ class Tests(unittest.TestCase):
         add_remove_page.add_element(self.driver)
         add_remove_page.delete_element(self.driver)
         self.assertTrue(add_remove_page.element_invisible(self.driver))
+
+    def test10_date_picker_correct_date(self):
+        date_picker_page.click_date_picker_tab(self.driver)
+        self.assertTrue(date_picker_page.date_picker_content_visible(self.driver))
+        self.assertTrue(date_picker_page.set_correct_date(self.driver))
+
+    def test10_date_picker_incorrect_date(self):
+        date_picker_page.click_date_picker_tab(self.driver)
+        self.assertTrue(date_picker_page.date_picker_content_visible(self.driver))
+        self.assertTrue(date_picker_page.set_incorrect_date(self.driver))
+
+    def test11_basic_auth_login_without_credentials(self):
+        basic_auth_page.click_basic_auth_tab(self.driver)
+        self.assertTrue(basic_auth_page.basic_auth_content_visible(self.driver))
+        self.assertTrue(basic_auth_page.login_with_empty_credentials(self.driver))
+
+    def test12_basic_auth_login_with_correct_credentials(self):
+        basic_auth_page.click_basic_auth_tab(self.driver)
+        self.assertTrue(basic_auth_page.basic_auth_content_visible(self.driver))
+        self.assertTrue(basic_auth_page.login_with_correct_credentials(self.driver))
+
+    def test13_basic_auth_login_with_incorrect_username(self):
+        basic_auth_page.click_basic_auth_tab(self.driver)
+        self.assertTrue(basic_auth_page.basic_auth_content_visible(self.driver))
+        self.assertTrue(basic_auth_page.login_with_incorrect_username_and_correct_password(self.driver))
+
+    def test14_basic_auth_login_with_incorrect_password(self):
+        basic_auth_page.click_basic_auth_tab(self.driver)
+        self.assertTrue(basic_auth_page.basic_auth_content_visible(self.driver))
+        self.assertTrue(basic_auth_page.login_with_correct_username_and_incorrect_password(self.driver))
+
+    def test15_form_filling(self):
+        form_page.click_form_tab(self.driver)
+        self.assertTrue(form_page.form_content_visible(self.driver))
+        self.assertTrue(form_page.form_filled(self.driver))
 
 if __name__ == '__main__':
     unittest.main()
