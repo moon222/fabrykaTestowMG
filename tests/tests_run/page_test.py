@@ -2,7 +2,8 @@ import unittest
 from selenium import webdriver
 from config.test_settings import TestSettings
 from tests.page_objects import main_page, checkboxes_page, hovers_page, users_page, inputs_page, dropdown_page
-from tests.page_objects import add_remove_page, date_picker_page, basic_auth_page, form_page
+from tests.page_objects import add_remove_page, date_picker_page, basic_auth_page, form_page, key_presses_page
+from tests.page_objects import drag_and_drop_page
 
 
 class Tests(unittest.TestCase):
@@ -92,6 +93,16 @@ class Tests(unittest.TestCase):
         form_page.click_form_tab(self.driver)
         self.assertTrue(form_page.form_content_visible(self.driver))
         self.assertTrue(form_page.form_filled(self.driver))
+
+    def test16_key_presses_enter(self):
+        key_presses_page.click_key_presses_tab(self.driver)
+        self.assertTrue(key_presses_page.key_presses_content_visible(self.driver))
+        self.assertTrue(key_presses_page.key_press_enter_button(self.driver))
+
+    def test17_drag_and_drop_visibility(self):
+        drag_and_drop_page.click_drag_and_drop_tab(self.driver)
+        self.assertTrue(drag_and_drop_page.drag_and_drop_content_visible(self.driver))
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,5 +1,4 @@
 from helpers.funkcje_modul6 import *
-import time
 
 form_tab = 'form-header'
 form_content = 'form-content'
@@ -34,7 +33,6 @@ def form_filled(driver_instance):
     # Find 'Submit' button
     elem3 = driver_instance.find_element_by_id(form_submit)
     elem3.click()
-    time.sleep(3)
     # Check if 'success' message is displayed
     alert = driver_instance.switch_to.alert
     # Extract text from alert
