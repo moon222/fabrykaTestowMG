@@ -3,7 +3,7 @@ from selenium import webdriver
 from config.test_settings import TestSettings
 from tests.page_objects import main_page, checkboxes_page, hovers_page, users_page, inputs_page, dropdown_page
 from tests.page_objects import add_remove_page, date_picker_page, basic_auth_page, form_page, key_presses_page
-from tests.page_objects import drag_and_drop_page
+from tests.page_objects import drag_and_drop_page, status_codes_page, iframe_page
 
 
 class Tests(unittest.TestCase):
@@ -103,6 +103,19 @@ class Tests(unittest.TestCase):
         drag_and_drop_page.click_drag_and_drop_tab(self.driver)
         self.assertTrue(drag_and_drop_page.drag_and_drop_content_visible(self.driver))
 
+    def test18_status_codes_visibility(self):
+        status_codes_page.click_status_codes_tab(self.driver)
+        self.assertTrue(status_codes_page.status_codes_content_visible(self.driver))
+
+    def test19_iframe_click_button1(self):
+        iframe_page.click_iframe_tab(self.driver)
+        self.assertTrue(iframe_page.iframe_content_visibility(self.driver))
+        self.assertTrue(iframe_page.iframe_click_button1(self.driver))
+
+    def test20_iframe_click_button2(self):
+        iframe_page.click_iframe_tab(self.driver)
+        self.assertTrue(iframe_page.iframe_content_visibility(self.driver))
+        self.assertTrue(iframe_page.iframe_click_button2(self.driver))
 
 if __name__ == '__main__':
     unittest.main()
