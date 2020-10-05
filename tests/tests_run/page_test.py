@@ -103,6 +103,10 @@ class Tests(unittest.TestCase):
         drag_and_drop_page.click_drag_and_drop_tab(self.driver)
         self.assertTrue(drag_and_drop_page.drag_and_drop_content_visible(self.driver))
 
+    def testXX_drag_and_drop_changed(self):
+        drag_and_drop_page.click_drag_and_drop_tab(self.driver)
+        self.assertTrue(drag_and_drop_page.check_drag_and_drop(self.driver))
+
     def test18_status_codes_visibility(self):
         status_codes_page.click_status_codes_tab(self.driver)
         self.assertTrue(status_codes_page.status_codes_content_visible(self.driver))
